@@ -30,7 +30,7 @@ public class GuiNBTNode extends Gui{
 		this.node = node;
 		this.x = x;
 		this.y = y;
-		height = mc.fontRenderer.FONT_HEIGHT;
+		height = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
 		updateDisplay();
 	}
 	
@@ -68,7 +68,7 @@ public class GuiNBTNode extends Gui{
 	
 	public void updateDisplay(){
 		displayString = NBTStringHelper.getNBTNameSpecial(node.getObject());
-		width = mc.fontRenderer.getStringWidth(displayString)+12;
+		width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString)+12;
 	}
 	
 	public void draw(int mx, int my)
@@ -78,7 +78,7 @@ public class GuiNBTNode extends Gui{
 		boolean chHover = inHideShowBounds(mx,my);
 		int color = selected ? 0xff : hover ? 16777120 : (node.hasParent()) ? 14737632 : -6250336;
 	
-		mc.renderEngine.bindTexture(WIDGET_TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(WIDGET_TEXTURE);
 		
 		if (selected){
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -91,7 +91,7 @@ public class GuiNBTNode extends Gui{
 		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(x+1, y, (node.getObject().getNBT().getId() -1)*9, 18, 9, 9);
-		drawString(mc.fontRenderer, displayString, x+11, y + (this.height - 8) / 2, color);
+		drawString(Minecraft.getMinecraft().fontRendererObj, displayString, x+11, y + (this.height - 8) / 2, color);
 	}
 	
 	public boolean shouldDraw(int top, int bottom) {

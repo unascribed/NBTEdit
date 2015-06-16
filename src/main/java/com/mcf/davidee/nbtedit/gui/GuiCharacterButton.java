@@ -22,7 +22,7 @@ public class GuiCharacterButton extends Gui{
 		this.y = y;
 	}
 	public void draw(int mx, int my){
-		mc.renderEngine.bindTexture(GuiNBTNode.WIDGET_TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(GuiNBTNode.WIDGET_TEXTURE);
 		
 		if(inBounds(mx,my))
 			Gui.drawRect(x, y, x+WIDTH, y+HEIGHT, 0x80ffffff);

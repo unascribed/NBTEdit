@@ -4,6 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ChatAllowedCharacters;
 
 import org.lwjgl.opengl.GL11;
@@ -541,16 +542,17 @@ public class GuiTextField extends Gui{
 			 par4 = var5;
 		 }
 
-		 Tessellator var6 = Tessellator.instance;
+		 Tessellator var6 = Tessellator.getInstance();
 		 GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
 		 GL11.glDisable(GL11.GL_TEXTURE_2D);
 		 GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
 		 GL11.glLogicOp(GL11.GL_OR_REVERSE);
-		 var6.startDrawingQuads();
-		 var6.addVertex((double)par1, (double)par4, 0.0D);
-		 var6.addVertex((double)par3, (double)par4, 0.0D);
-		 var6.addVertex((double)par3, (double)par2, 0.0D);
-		 var6.addVertex((double)par1, (double)par2, 0.0D);
+		 WorldRenderer wr = var6.getWorldRenderer();
+		 wr.startDrawingQuads();
+		 wr.addVertex((double)par1, (double)par4, 0.0D);
+		 wr.addVertex((double)par3, (double)par4, 0.0D);
+		 wr.addVertex((double)par3, (double)par2, 0.0D);
+		 wr.addVertex((double)par1, (double)par2, 0.0D);
 		 var6.draw();
 		 GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
 		 GL11.glEnable(GL11.GL_TEXTURE_2D);

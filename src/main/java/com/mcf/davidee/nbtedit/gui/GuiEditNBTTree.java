@@ -1,9 +1,12 @@
 package com.mcf.davidee.nbtedit.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -37,6 +40,7 @@ public class GuiEditNBTTree extends GuiScreen{
 		guiTree = new GuiNBTTree(new NBTTree(tag));
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initGui() {
 		Keyboard.enableRepeatEvents(true);
@@ -46,10 +50,12 @@ public class GuiEditNBTTree extends GuiScreen{
 		this.buttonList.add(new GuiButton(0, width *3 / 4 -100, this.height -27, "Quit"));
 	}
 	
+	@Override
 	public void onGuiClosed() {
 		Keyboard.enableRepeatEvents(false);
 	}
 
+	@Override
 	protected void keyTyped(char par1, int key) {
 		GuiEditNBT window = guiTree.getWindow();
 		if (window != null)
@@ -73,7 +79,8 @@ public class GuiEditNBTTree extends GuiScreen{
 				guiTree.keyTyped(par1, key);
 		}
 	}
-	protected void mouseClicked(int x, int y, int t) {
+	@Override
+	protected void mouseClicked(int x, int y, int t) throws IOException {
 		if (guiTree.getWindow() == null)
 			super.mouseClicked(x, y, t);
 		if (t == 0)
@@ -82,7 +89,8 @@ public class GuiEditNBTTree extends GuiScreen{
 			guiTree.rightClick(x,y);
 	}
 	
-	public void handleMouseInput() {
+	@Override
+	public void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 		int ofs = Mouse.getEventDWheel();
 
@@ -92,6 +100,7 @@ public class GuiEditNBTTree extends GuiScreen{
 
 	}
 	
+	@Override
 	protected void actionPerformed(GuiButton b) {
 		if (b.enabled){
 			switch(b.id){
@@ -105,8 +114,9 @@ public class GuiEditNBTTree extends GuiScreen{
 		}
 	}
 	
+	@Override
 	public void updateScreen() {
-		if (!mc.thePlayer.isEntityAlive())
+		if (!Minecraft.getMinecraft().thePlayer.isEntityAlive())
 			quitWithoutSaving();
 		else
 			guiTree.updateScreen();
@@ -117,31 +127,33 @@ public class GuiEditNBTTree extends GuiScreen{
 			NBTEdit.DISPATCHER.sendToServer(new EntityNBTPacket(entityOrX, guiTree.getNBTTree().toNBTTagCompound()));
 		else
 			NBTEdit.DISPATCHER.sendToServer(new TileNBTPacket(entityOrX, y, z, guiTree.getNBTTree().toNBTTagCompound()));
-		mc.displayGuiScreen(null);
-		mc.setIngameFocus();
+		Minecraft.getMinecraft().displayGuiScreen(null);
+		Minecraft.getMinecraft().setIngameFocus();
 
 	}
 	
 	private void quitWithoutSaving() {
-		mc.displayGuiScreen(null);
+		Minecraft.getMinecraft().displayGuiScreen(null);
 	}
 	
+	@Override
 	public void drawScreen(int x, int y, float par3) {
 		this.drawDefaultBackground();
 		guiTree.draw( x, y);
-		this.drawCenteredString(mc.fontRenderer, this.screenTitle, this.width / 2, 5, 16777215);
+		this.drawCenteredString(Minecraft.getMinecraft().fontRendererObj, this.screenTitle, this.width / 2, 5, 16777215);
 		if (guiTree.getWindow() == null)
 			super.drawScreen(x, y, par3);
 		else
 			super.drawScreen(-1, -1, par3);
 	}
 	
+	@Override
 	public boolean doesGuiPauseGame() {
 		return true;
 	}
 	
 	public Entity getEntity() {
-		return entity ?  mc.theWorld.getEntityByID(entityOrX) : null;
+		return entity ?  Minecraft.getMinecraft().theWorld.getEntityByID(entityOrX) : null;
 	}
 	
 	public boolean isTileEntity() {

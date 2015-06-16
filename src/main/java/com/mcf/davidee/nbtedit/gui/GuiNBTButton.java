@@ -25,7 +25,7 @@ public class GuiNBTButton extends Gui{
 		this.y = y;
 	}
 	public void draw(int mx, int my){
-		mc.renderEngine.bindTexture(GuiNBTNode.WIDGET_TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(GuiNBTNode.WIDGET_TEXTURE);
 		
 		if(inBounds(mx,my)){
 			Gui.drawRect(x, y, x+WIDTH, y+HEIGHT, 0x80ffffff);
@@ -45,9 +45,9 @@ public class GuiNBTButton extends Gui{
 	}
 	private void drawToolTip(int mx, int my){
 		String s = NBTStringHelper.getButtonName(id);
-		int width = mc.fontRenderer.getStringWidth(s);
+		int width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(s);
 		drawRect(mx+4,my+7,mx+5+width,my+17, 0xff000000);
-		mc.fontRenderer.drawString(s, mx+5, my+8, 0xffffff);
+		Minecraft.getMinecraft().fontRendererObj.drawString(s, mx+5, my+8, 0xffffff);
 	}
 	public void setEnabled(boolean aFlag){
 		enabled = aFlag;

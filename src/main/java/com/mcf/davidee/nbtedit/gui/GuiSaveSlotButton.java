@@ -46,21 +46,21 @@ public class GuiSaveSlotButton extends Gui {
 
 		int textColor = ((inBounds(mx,my))) ? 16777120 : 0xffffff;
 		renderVanillaButton(x,y,0,66,width,HEIGHT);
-		drawCenteredString(mc.fontRenderer, text, x + width/2, y + 6, textColor);
+		drawCenteredString(Minecraft.getMinecraft().fontRendererObj, text, x + width/2, y + 6, textColor);
 		if (tickCount != -1 && tickCount / 6 % 2 == 0){
-			mc.fontRenderer.drawStringWithShadow("_", x+(width+mc.fontRenderer.getStringWidth(text))/2+1, y+6, 0xffffff);
+			Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow("_", x+(width+Minecraft.getMinecraft().fontRendererObj.getStringWidth(text))/2+1, y+6, 0xffffff);
 		}
 
 		if (xVisible){
 			textColor = ((inBoundsOfX(mx,my))) ? 16777120 : 0xffffff;
 			renderVanillaButton(leftBoundOfX(),topBoundOfX(),0,66,X_SIZE,X_SIZE);
-			drawCenteredString(mc.fontRenderer, "x", x-GAP-X_SIZE/2, y + 6, textColor);
+			drawCenteredString(Minecraft.getMinecraft().fontRendererObj, "x", x-GAP-X_SIZE/2, y + 6, textColor);
 		}
 	}
 	
 	private void renderVanillaButton(int x, int y, int u, int v, int width, int height){
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 		
 		//Top Left
 		this.drawTexturedModalRect(x, y, u, v, width/2, height/2);
@@ -89,7 +89,7 @@ public class GuiSaveSlotButton extends Gui {
 	}
 
 	private void updatePosition(){
-		width = mc.fontRenderer.getStringWidth(text)+24;
+		width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(text)+24;
 		if (width % 2 == 1)
 			++width;
 		width = MathHelper.clamp_int(width, MIN_WIDTH, MAX_WIDTH);

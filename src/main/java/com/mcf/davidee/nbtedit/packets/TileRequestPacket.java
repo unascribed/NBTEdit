@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 public class TileRequestPacket extends AbstractPacket {
 	
@@ -46,7 +47,7 @@ public class TileRequestPacket extends AbstractPacket {
 
 	@Override
 	public void handleServerSide(EntityPlayerMP player) {
-		TileEntity te = player.worldObj.getTileEntity(x, y, z);
+		TileEntity te = player.worldObj.getTileEntity(new BlockPos(x, y, z));
 		if (te != null) {
 			NBTTagCompound tag = new NBTTagCompound();
 			te.writeToNBT(tag);

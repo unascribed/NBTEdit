@@ -62,8 +62,8 @@ public class GuiEditNBT extends Gui{
 		newLine = new GuiCharacterButton((byte)1,x+WIDTH-1,y+50);
 		String sKey = (key == null) ? node.getObject().getName() : key.getText();
 		String sValue = (value == null) ? getValue(nbt) : value.getText();
-		this.key = new GuiTextField(mc.fontRenderer,x+46,y+18,116,15,false);
-		this.value = new GuiTextField(mc.fontRenderer,x+46,y+44,116,15,true);
+		this.key = new GuiTextField(Minecraft.getMinecraft().fontRendererObj,x+46,y+18,116,15,false);
+		this.value = new GuiTextField(Minecraft.getMinecraft().fontRendererObj,x+46,y+44,116,15,true);
 		
 		key.setText(sKey);
 		key.setEnableBackgroundDrawing(false);
@@ -114,8 +114,8 @@ public class GuiEditNBT extends Gui{
 	}
 
 	public void draw(int mx, int my){
-		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/nbtedit_textures/nbteditwindow.png"));
-		mc.renderEngine.bindTexture(WINDOW_TEXTURE);
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.getMinecraft().renderEngine.getTexture("/nbtedit_textures/nbteditwindow.png"));
+		Minecraft.getMinecraft().renderEngine.bindTexture(WINDOW_TEXTURE);
 		
 		GL11.glColor4f(1, 1, 1, 1);
 		drawTexturedModalRect(x,y,0,0,WIDTH,HEIGHT);
@@ -130,14 +130,15 @@ public class GuiEditNBT extends Gui{
 		cancel.drawButton(mc, mx, my);
 
 		if (kError != null)
-			drawCenteredString(mc.fontRenderer, kError, x+WIDTH/2, y+4, 0xFF0000);
+			drawCenteredString(Minecraft.getMinecraft().fontRendererObj, kError, x+WIDTH/2, y+4, 0xFF0000);
 		if (vError != null)
-			drawCenteredString(mc.fontRenderer,vError,x+WIDTH/2,y+32,0xFF0000);
+			drawCenteredString(Minecraft.getMinecraft().fontRendererObj,vError,x+WIDTH/2,y+32,0xFF0000);
 
 		newLine.draw(mx, my);
 		section.draw(mx, my);
 	}
 	
+	@Override
 	public void drawCenteredString(FontRenderer par1FontRenderer, String par2Str, int par3, int par4, int par5) {
 		par1FontRenderer.drawString(par2Str, par3 - par1FontRenderer.getStringWidth(par2Str) / 2, par4, par5);
 	}
@@ -260,7 +261,7 @@ public class GuiEditNBT extends Gui{
 		switch(base.getId()){
 		case 7:
 			String s = "";
-			for (byte b : ((NBTTagByteArray)base).func_150292_c() /*byteArray*/){
+			for (byte b : ((NBTTagByteArray)base).getByteArray()){
 				s += b + " ";
 			}
 			return s;
@@ -270,7 +271,7 @@ public class GuiEditNBT extends Gui{
 			return "TagCompound";
 		case 11:
 			String i = "";
-			for (int a : ((NBTTagIntArray)base).func_150302_c() /*intArray*/){
+			for (int a : ((NBTTagIntArray)base).getIntArray()){
 				i += a + " ";
 			}
 			return i;

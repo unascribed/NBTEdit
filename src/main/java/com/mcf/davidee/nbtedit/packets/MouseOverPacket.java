@@ -34,7 +34,7 @@ public class MouseOverPacket extends AbstractPacket {
 			if (pos.entityHit != null)
 				packet = new EntityRequestPacket(pos.entityHit.getEntityId());
 			else if (pos.typeOfHit == MovingObjectType.BLOCK)
-				packet = new TileRequestPacket(pos.blockX, pos.blockY, pos.blockZ);
+				packet = new TileRequestPacket(pos.getBlockPos().getX(), pos.getBlockPos().getY(), pos.getBlockPos().getZ());
 		if (packet == null) 
 			sendMessageToPlayer(player, SECTION_SIGN + "cError - No tile or entity selected");
 		else

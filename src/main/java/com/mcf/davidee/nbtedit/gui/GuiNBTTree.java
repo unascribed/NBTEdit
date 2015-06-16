@@ -13,6 +13,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -51,7 +52,7 @@ public class GuiNBTTree extends Gui{
 	private GuiNBTButton[] buttons;
 
 	private final int X_GAP = 10, START_X = 10, START_Y = 30;
-	private final int Y_GAP = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT+2;
+	private final int Y_GAP = Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT+2;
 
 	private int y, yClick, bottom, width, height, heightDiff, offset;
 
@@ -254,10 +255,14 @@ public class GuiNBTTree extends Gui{
 		}
 		overlayBackground(0, START_Y-1, 255, 255);
 		overlayBackground(bottom, height, 255, 255);
-		for (GuiNBTButton but : buttons)
+		for (GuiNBTButton but : buttons) {
+			if (but == null) continue;
 			but.draw(cmx,cmy);
-		for (GuiSaveSlotButton but : saves)
+		}
+		for (GuiSaveSlotButton but : saves) {
+			if (but == null) continue;
 			but.draw(cmx, cmy);
+		}
 		drawScrollBar(cmx, cmy);
 		if (window != null)
 			window.draw(mx, my);
@@ -322,18 +327,19 @@ public class GuiNBTTree extends Gui{
 
 	protected void overlayBackground(int par1, int par2, int par3, int par4)
 	{
-		Tessellator var5 = Tessellator.instance;
-		mc.renderEngine.bindTexture(optionsBackground);
-		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture( "/gui/background.png"));
+		Tessellator var5 = Tessellator.getInstance();
+		WorldRenderer wr = var5.getWorldRenderer();
+		Minecraft.getMinecraft().renderEngine.bindTexture(optionsBackground);
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.getMinecraft().renderEngine.getTexture( "/gui/background.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var6 = 32.0F;
-		var5.startDrawingQuads();
-		var5.setColorRGBA_I(4210752, par4);
-		var5.addVertexWithUV(0.0D, (double)par2, 0.0D, 0.0D, (double)((float)par2 / var6));
-		var5.addVertexWithUV((double)this.width, (double)par2, 0.0D, (double)((float)this.width / var6), (double)((float)par2 / var6));
-		var5.setColorRGBA_I(4210752, par3);
-		var5.addVertexWithUV((double)this.width, (double)par1, 0.0D, (double)((float)this.width / var6), (double)((float)par1 / var6));
-		var5.addVertexWithUV(0.0D, (double)par1, 0.0D, 0.0D, (double)((float)par1 / var6));
+		wr.startDrawingQuads();
+		wr.setColorRGBA_I(4210752, par4);
+		wr.addVertexWithUV(0.0D, (double)par2, 0.0D, 0.0D, (double)((float)par2 / var6));
+		wr.addVertexWithUV((double)this.width, (double)par2, 0.0D, (double)((float)this.width / var6), (double)((float)par2 / var6));
+		wr.setColorRGBA_I(4210752, par3);
+		wr.addVertexWithUV((double)this.width, (double)par1, 0.0D, (double)((float)this.width / var6), (double)((float)par1 / var6));
+		wr.addVertexWithUV(0.0D, (double)par1, 0.0D, 0.0D, (double)((float)par1 / var6));
 		var5.draw();
 	}
 
@@ -360,7 +366,7 @@ public class GuiNBTTree extends Gui{
 					if (button.inBoundsOfX(mx, my)){
 						button.reset();
 						NBTEdit.getSaveStates().save();
-						mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+						Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 						return;
 					}
 					if (button.inBounds(mx, my)){
@@ -408,7 +414,7 @@ public class GuiNBTTree extends Gui{
 				button.save.tag.setTag(name, base.copy());
 			button.saved();
 			NBTEdit.getSaveStates().save();
-			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+			Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 		}
 		else{ //Paste into
 			Map<String, NBTBase> nbtMap = NBTHelper.getMap(button.save.tag);
@@ -432,7 +438,7 @@ public class GuiNBTTree extends Gui{
 					setFocused(null);
 					tree = new NBTTree((NBTTagCompound)nbt);
 					initGUI();
-					mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+					Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 				}
 				else if (canAddToParent(focused.getObject().getNBT(), nbt)){
 					focused.setDrawChildren(true);
@@ -447,7 +453,7 @@ public class GuiNBTTree extends Gui{
 					tree.sort(node);
 					setFocused(node);
 					initGUI(true);
-					mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+					Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
 				}
 			}
 		}
@@ -568,7 +574,7 @@ public class GuiNBTTree extends Gui{
 			return true;
 		if (parent instanceof NBTTagList){
 			NBTTagList list = (NBTTagList) parent;
-			return list.tagCount() == 0 || list.func_150303_d() == child.getId();
+			return list.tagCount() == 0 || list.getTagType() == child.getId();
 		}
 		return false;
 	}

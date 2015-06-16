@@ -1,18 +1,15 @@
 package com.mcf.davidee.nbtedit;
 
-import java.io.DataInput;
 import java.io.DataInputStream;
-import java.io.InputStream;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class NBTHelper {
 	
@@ -29,7 +26,6 @@ public class NBTHelper {
 	}
 	
 	public static NBTBase getTagAt(NBTTagList tag, int index) {
-		List<NBTBase> list = ReflectionHelper.getPrivateValue(NBTTagList.class, tag, 0);
-		return list.get(index);
+		return tag.get(index);
 	}
 }
